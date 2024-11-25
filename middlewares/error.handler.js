@@ -3,13 +3,6 @@ function logErrors(err, req, res, next){
   next(err);
 }
 
-function errorHandler(err, req, res, next){
-  res.status(500).json({
-    message: err,
-    stack: err.message,
-  });
-}
-
 function boomErrorHandler(err, req, res, next){
   if (err.isBoom) {
     const { output } = err;
@@ -17,6 +10,13 @@ function boomErrorHandler(err, req, res, next){
   } else {
     next(err);
   }
+}
+
+function errorHandler(err, req, res, next){
+  res.status(500).json({
+    message: err,
+    stack: err.message,
+  });
 }
 
 module.exports = { logErrors, errorHandler, boomErrorHandler };

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@hapi/boom": "^10.0.1",
+    "cors": "^2.8.5",
     "express": "^4.21.1",
     "joi": "^17.13.3"
   }
