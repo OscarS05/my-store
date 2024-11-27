@@ -14,7 +14,7 @@ const sequelize = new Sequelize(URI, {
 
 setupModels(sequelize); //Define e inicializa los modelos y relaciones.
 
-sequelize.sync(); // Crea las tablas según los modelos si aún no existen o las actualiza según la configuración.
-
+// sequelize.sync(); // Crea las tablas según los modelos si aún no existen o las actualiza según la configuración.
+// Este .sync() solo debe usarse en desarrollo, para producción se debe usar un sistema de migraciones
 
 module.exports = sequelize;
