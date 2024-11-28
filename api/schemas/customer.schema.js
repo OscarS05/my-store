@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const { createUserSchema } = require('./user.schema');
-console.log(createUserSchema);
+
 
 const id = Joi.number().integer();
 const name = Joi.string().min(3).max(30);

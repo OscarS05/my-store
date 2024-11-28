@@ -9,7 +9,7 @@ class ProductsService {
     this.generate();
   }
 
-  generate(){
+  async generate(){
     const limit = 100;
 
     for (let i = 0; i < limit; i++) {
@@ -26,10 +26,12 @@ class ProductsService {
   }
 
   async find(){
-    return ( await models.Product.findAll());
+    return ( await models.Product.findAll({
+      include: ['category'],
+    }));
   }
 
-  findOne(id){
+  async findOne(id){
     const product = this.products.find(item => item.id === id)
     if(!product){
       throw boom.notFound('Product not found');
@@ -41,16 +43,17 @@ class ProductsService {
     return product;
   }
 
-  create(data){
-    const newProduct = {
-      id: faker.string.uuid(),
-      ...data,
-    }
-    this.products.push(newProduct);
-    return newProduct;
+  async create(data){
+    // const newProduct = {
+    //   id: faker.string.uuid(),
+    //   ...data,
+    // }
+    // this.products.push(newProduct);
+    console.log('ESTO ES DATA', data);
+    return ( await models.Product.create(data) );
   }
 
-  update(id, changes){
+  async update(id, changes){
     const index = this.products.findIndex(item => item.id === id);
     if(index === -1){
       throw boom.notFound('Product not found');
@@ -62,7 +65,7 @@ class ProductsService {
     return this.products[index];
   }
 
-  delete(id){
+  async delete(id){
     const index = this.products.findIndex(item => item.id === id);
     if(index === -1){
       throw boom.notFound('Product not found');
