@@ -5,6 +5,11 @@ class OrderService {
   constructor(){
   }
 
+  async addItem(data){
+    const newItem = await models.OrderProduct.create(data);
+    return newItem;
+  }
+
   async create(data) {
     const newOrder = models.Order.create(data, {
       include: ['customer'],
@@ -19,12 +24,16 @@ class OrderService {
   }
 
   async findOne(id) {
-    return ( await models.Order.findByPk(id, {
-      include:{
-        association: 'customer',
-        include: ['user'],
-      },
-    }) );
+    const order = await models.Order.findByPk(id, {
+      include:[
+        {
+          association: 'customer',
+          include: ['user'],
+        },
+        'items'
+      ]
+    });
+    return order;
   }
 
   async update(id, changes) {
