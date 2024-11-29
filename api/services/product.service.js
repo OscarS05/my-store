@@ -25,10 +25,17 @@ class ProductsService {
     return this.products;
   }
 
-  async find(){
-    return ( await models.Product.findAll({
+  async find(query){
+    const options = {
       include: ['category'],
-    }));
+    }
+    const { limit, offset } = query
+    if(limit && offset ){
+      options.limit = limit;
+      options.offset = offset;
+    }
+    const products = await models.Product.findAll(options);
+    return products;
   }
 
   async findOne(id){
@@ -44,12 +51,6 @@ class ProductsService {
   }
 
   async create(data){
-    // const newProduct = {
-    //   id: faker.string.uuid(),
-    //   ...data,
-    // }
-    // this.products.push(newProduct);
-    console.log('ESTO ES DATA', data);
     return ( await models.Product.create(data) );
   }
 

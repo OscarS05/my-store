@@ -5,18 +5,25 @@ const ProductsService = require('../services/product.service');
 const service = new ProductsService();
 
 const validatorHandler = require('../middlewares/validator.handler');
-const { createProductSchema, updateProductSchema, getProductSchema } = require('../schemas/product.schema');
+const { createProductSchema, updateProductSchema, getProductSchema, queryProductSchema } = require('../schemas/product.schema');
 
 const { Boom } = require('@hapi/boom');
 
 // GET
-router.get('/', async (req, res) => {
-  const products = await service.find();
-  res.json(products);
-});
+router.get('/',
+  validatorHandler(queryProductSchema, 'query'), // Se usa query para obtener los parámetros tipo clave=valor
+  async (req, res, next) => {
+    try {
+      const products = await service.find(req.query);
+      res.json(products);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.get('/:id',
-  validatorHandler(getProductSchema, 'params'),
+  validatorHandler(getProductSchema, 'params'), //Se usa params para obtener un dato en específico
   async (req, res, next) => {
     try {
       const { id } = req.params;
