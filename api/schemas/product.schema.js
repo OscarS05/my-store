@@ -9,6 +9,9 @@ const description = Joi.string().min(10);
 const image = Joi.string().uri();
 const categoryId = Joi.number().integer();
 
+const price_min = Joi.number().integer().min(0);
+const price_max = Joi.number().integer();
+
 const limit = Joi.number().integer();
 const offset = Joi.number().integer();
 
@@ -33,9 +36,27 @@ const getProductSchema = Joi.object({
   id: id.required(),
 });
 
+// FORMA REALIZADA EN LA CLASE
+// const queryProductSchema = Joi.object({
+//  limit,
+//  offset,
+//  price,
+//  price_min,
+//   price_max: price_max.when('price_min', {
+//     is: price_min.required(),
+//     then: Joi.required()
+//   })
+// });
+
 const queryProductSchema = Joi.object({
- limit,
- offset
-});
+  limit,
+  offset,
+  price,
+  price_min,
+  price_max: price_max.greater(Joi.ref('price_min')),
+})
+  .with('price_min', 'price_max')
+  .with('price_max', 'price_min');
+
 
 module.exports = { createProductSchema, updateProductSchema, getProductSchema, queryProductSchema };
