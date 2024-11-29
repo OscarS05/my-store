@@ -1,6 +1,6 @@
 // También este archivo podría ser llamado DTO
 const Joi = require('joi');
-const { Category } = require('../../db/models/category.model');
+const { Category } = require('../db/models/category.model');
 
 const id = Joi.number().integer();
 const name = Joi.string().min(3).max(20);
