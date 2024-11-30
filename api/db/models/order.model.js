@@ -1,6 +1,5 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { CUSTOMER_TABLE } = require('./customer.model');
-const { defaultValueSchemable } = require('sequelize/lib/utils');
 
 const ORDER_TABLE = 'orders';
 

@@ -13,7 +13,7 @@ module.exports = {
     });
   },
 
-  async down (queryInterface, Sequelize) {
-    // await queryInterface.drop(CUSTOMER_TABLE);
+  async down (queryInterface) {
+    await queryInterface.drop(CUSTOMER_TABLE);
   }
 };
