@@ -17,6 +17,6 @@ if(config.isProd){
 }
 
 
-const pool = new Pool(pool);
+const pool = new Pool(options);
 
 module.exports = pool;
