@@ -1,10 +1,12 @@
 'use strict';
 
-const { UserSchema, USER_TABLE } = require('./../models/user.model');
+const { USER_TABLE } = require('./../models/user.model');
+const { Model, DataTypes, Sequelize } = require('sequelize');
+
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up (queryInterface) {
     await queryInterface.addColumn(USER_TABLE, 'role', {
       allowNull: false,
       type: DataTypes.STRING,

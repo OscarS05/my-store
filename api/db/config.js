@@ -1,3 +1,4 @@
+const { required } = require('joi');
 const { config } = require('../config/config');
 
 module.exports = {
