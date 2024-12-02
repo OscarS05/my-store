@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+
 
 const ProductsService = require('../services/product.service');
 const service = new ProductsService();
@@ -37,6 +39,7 @@ router.get('/:id',
 
 // POST
 router.post('/',
+  passport.authenticate('jwt', { session: false }),
   validatorHandler(createProductSchema, 'body'),
   async (req, res) => {
     const body = req.body;
