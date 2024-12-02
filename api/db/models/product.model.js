@@ -29,7 +29,7 @@ const ProductSchema = {
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
-    field: 'create_at',
+    field: 'created_at',
     defaultValue: Sequelize.NOW
   },
   categoryId: {
@@ -39,7 +39,9 @@ const ProductSchema = {
     references: {
       model: CATEGORY_TABLE,
       key: 'id',
-    }
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
   }
 }
 

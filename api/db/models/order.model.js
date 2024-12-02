@@ -10,17 +10,6 @@ const OrderSchema = {
     primaryKey: true,
     type: DataTypes.INTEGER
   },
-  state: {
-    allowNull: false,
-    type: DataTypes.STRING,
-    defaultValue: 'status'
-  },
-  totalAmount: {
-    allowNull: false,
-    field: 'total_amount',
-    type: DataTypes.FLOAT,
-    defaultValue: '0'
-  },
   customerId: {
     field: 'customer_id',
     allowNull: false,
@@ -28,12 +17,14 @@ const OrderSchema = {
     references: {
       model: CUSTOMER_TABLE,
       key: 'id',
-    }
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
   },
   createdAt: {
     allowNull: false,
     type: DataTypes.DATE,
-    field: 'create_at',
+    field: 'created_at',
     defaultValue: Sequelize.NOW
   },
   total:{

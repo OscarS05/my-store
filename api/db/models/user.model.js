@@ -24,10 +24,10 @@ const UserSchema = {
     type: DataTypes.STRING,
     defaultValue: 'customer'
   },
-  createdAt: {
+  createAt: {
     allowNull: false,
     type: DataTypes.DATE,
-    field: 'create_at',
+    field: 'created_at',
     defaultValue: Sequelize.NOW
   }
 }
