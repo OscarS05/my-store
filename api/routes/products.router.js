@@ -39,7 +39,6 @@ router.get('/:id',
 
 // POST
 router.post('/',
-  passport.authenticate('jwt', { session: false }),
   validatorHandler(createProductSchema, 'body'),
   async (req, res) => {
     const body = req.body;
