@@ -16,7 +16,8 @@ router.post('/login',
   async (req, res, next) => {
     try {
       const user = req.user;
-      res.json(service.signToken(user));
+      const rta = service.signToken(user);
+      res.json(rta);
     } catch (error) {
       next(error);
     }
@@ -24,11 +25,24 @@ router.post('/login',
 );
 
 router.post('/recovery',
+  // Aquí deberían de ir validaciones de datos
   async (req, res, next) => {
     try {
       const { email } = req.body;
-      console.log(email);
-      const rta = await service.sendMail(email);
+      const rta = await service.sendRecovery(email);
+      return res.json(rta);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post('/change-password',
+  // Se debe crear una validación de datos
+  async (req, res, next) => {
+    try {
+      const { token, newPassword } = req.body;
+      const rta = await service.changePassword(token, newPassword);
       return res.json(rta);
     } catch (error) {
       next(error);

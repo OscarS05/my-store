@@ -29,35 +29,57 @@ class AuthService {
       role: user.role
     };
     const token = jwt.sign(payload, config.jwtSecret);
-    return(
+    return({
       user,
       token
-    );
+    });
   }
 
-  async sendMail(email){
-    console.log(email);
+  async sendRecovery(email){
     const user = await service.findByEmail(email);
     if(!user){
       throw boom.unauthorized();
     }
+    const payload = { sub: user.id };
+    const token = jwt.sign(payload, config.jwtSecret, {expiresIn: '15min'});
+    const link = `http://myfrontend.com/recovery?token=${token}`
+    await service.update(user.id, {recoveryToken: token});
+    const mail = {
+      from: config.smtpEmail,
+      to: `${user.email}`,
+      subject: "Email para recuperar contraseña",
+      html: `<b>Ingresa a este link => ${link}</b>`,
+    }
+    await this.sendMail(mail);
+  }
+
+  async changePassword(token, newPassword){
+    try {
+      const payload = jwt.verify(token, config.jwtSecret);
+      const user = await service.findOne(payload.sub);
+      if(user.recoveryToken !== token){
+        throw boom.unauthorized();
+      }
+      const hash = await bcrypt.hash(newPassword, 10);
+      await service.update(user.id, {recoveryToken: null, password: hash});
+      return { message: 'Password changed' };
+    } catch (error) {
+      throw boom.unauthorized();
+    }
+  }
+
+  async sendMail(infoMail){
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       secure: true,
       port: 465, //Secure port
       auth: {
-        user: `${config.userEmail}`,
-        pass: `${config.userPass}`
+        user: config.smtpEmail,
+        pass: config.smtpPass
       }
     });
 
-    await transporter.sendMail({
-      from: `${config.userEmail}`, // sender address
-      to: `${user.email}`, // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: "Hello Santi?", // plain text body
-      html: "<b>Hello santi</b>", // html body
-    });
+    await transporter.sendMail(infoMail);
     return { message: 'mail sent' };
   }
 }

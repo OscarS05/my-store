@@ -40,7 +40,8 @@ class UserService {
 
   async update(id, changes) {
     const user = await this.findOne(id);
-    return ( await user.update(changes));
+    const rta = await user.update(changes);
+    return rta;
   }
 
   async delete(id) {

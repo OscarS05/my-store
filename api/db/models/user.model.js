@@ -19,6 +19,11 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.STRING
   },
+  recoveryToken: {
+    field: 'recovery_token',
+    allowNull: true,
+    type: Sequelize.DataTypes.STRING
+  },
   role: {
     allowNull: false,
     type: DataTypes.STRING,
